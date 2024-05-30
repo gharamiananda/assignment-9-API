@@ -1,28 +1,31 @@
 import { JwtPayload } from "jsonwebtoken";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { User } from "../User/user.model";
-import { RequestSearchableFields } from "./request.constant";
+import { donorFilterableFields } from "./request.constant";
 import { TRequestStatus } from "./request.interface";
 import { Request } from "./request.model";
 
 
 const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: any) => {
 
-    const {...donarUserData} = await User.findOne({id: payload.donorId});
+    console.log('payload', payload)
+    const donarUserData = await User.findById(payload.donorId);
 
+
+    console.log('donarUserData', donarUserData)
     const createdRequestData= await Request.create({
-        data: {
+     
             donorId: payload.donorId,
             phoneNumber: payload.phoneNumber,
             dateOfDonation: payload.dateOfDonation,
             hospitalName: payload.hospitalName,
             hospitalAddress: payload.hospitalAddress,
             reason: payload.reason,
-            requesterId:currentUser?.userId as string
-        }
+            requesterId:currentUser?._id as string
+        
     });
     return {
-        ...createdRequestData,
+        requestData :createdRequestData,
         donor: donarUserData
 
         
@@ -49,7 +52,7 @@ const getDonorListFromDB = async ( query: Record<string, unknown>) => {
     Request.find(),
     query,
   )
-    .search(RequestSearchableFields)
+    .search(donorFilterableFields)
     .filter()
     .sort()
     .paginate()

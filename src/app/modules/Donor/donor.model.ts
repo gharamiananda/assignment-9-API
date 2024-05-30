@@ -28,22 +28,17 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       required: [true, 'ID is required'],
       unique: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      unique: true,
-      ref: 'User',
-    },
+   
     donorRequests: [{
       type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      unique: true,
+  
+  
       ref: 'User',
     }],
     requesterRequests:[ {
       type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      unique: true,
+    
+     
       ref: 'User',
     }],
   

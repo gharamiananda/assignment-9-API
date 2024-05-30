@@ -41,7 +41,7 @@ const updateStatusRequest = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const donorFilterableFields = ['bloodType', 'searchTerm', 'bloodType','availability'];
+
 
 const getDonorList: RequestHandler = catchAsync(async (req: Request, res: Response) => {
    
@@ -50,7 +50,7 @@ const getDonorList: RequestHandler = catchAsync(async (req: Request, res: Respon
 sendResponse(res, {
   statusCode: httpStatus.OK,
   success: true,
-  message: 'Academic departments are retrieved successfully',
+  message: 'Requests are retrieved successfully',
   meta: result.meta,
   data: result.result,
 });

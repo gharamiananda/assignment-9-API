@@ -13,6 +13,7 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 import {
   generateAdminId,
+  generateDonorId,
 } from './user.utils';
 
 
@@ -84,7 +85,6 @@ const createDonorIntoDB = async (
 
   // create a user object
   const userData: Partial<TUser> = {};
-  console.log('userData', {userData,payload})
 
  
 
@@ -103,7 +103,9 @@ const createDonorIntoDB = async (
   try {
     session.startTransaction();
     //set  generated id
-    userData.id = await generateAdminId();
+    userData.id = await generateDonorId();
+  console.log('userData', {userData})
+
 
     if (file) {
       const imageName = `${userData.id}${payload?.name?.firstName}`;
@@ -116,16 +118,24 @@ const createDonorIntoDB = async (
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session });
 
+    // console.log('newUser', newUser)
+
     //create a admin
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
     }
     // set id , _id as user
     payload.id = newUser[0].id;
-    payload.user = newUser[0]._id; //reference _id
+    payload.user = newUser[0]._id; 
+    
+
+    payload.username = payload.username;
+    payload.password = payload.password;
+
+    console.log('payload', payload)
 
     // create a admin (transaction-2)
-    const newDonor = await Donor.create([payload], { session });
+    const newDonor = await Donor.create([{...payload,role:'donor'}], { session });
 
     if (!newDonor.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');

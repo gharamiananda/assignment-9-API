@@ -4,11 +4,7 @@ import { RequestModel, TRequest } from './request.interface';
 
 const requestSchema = new Schema<TRequest, RequestModel>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+ 
     donorId: {
       type: String,
       required: true,

@@ -34,7 +34,7 @@ const createDonor = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admin is created successfully',
+    message: 'Donor is created successfully',
     data: result,
   });
 });

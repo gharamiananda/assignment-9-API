@@ -1,1 +1,2 @@
-export const RequestSearchableFields = ['name'];
+
+export const donorFilterableFields = ['bloodType', 'searchTerm', 'bloodType','availability'];

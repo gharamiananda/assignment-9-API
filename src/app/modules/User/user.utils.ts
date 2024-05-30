@@ -62,6 +62,6 @@ export const generateDonorId = async () => {
 
   let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
 
-  incrementId = `A-${incrementId}`;
+  incrementId = `D-${incrementId}`;
   return incrementId;
 };

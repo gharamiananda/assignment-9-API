@@ -10,7 +10,7 @@ import { createToken, verifyToken } from './auth.utils';
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
-  const user = await User.isUserExistsByCustomId(payload.id);
+  const user :any= await User.isUserExistsByEmail(payload.email);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -40,6 +40,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   const jwtPayload = {
     userId: user.id,
+    _id: user._id as string,
     role: user.role,
   };
 
