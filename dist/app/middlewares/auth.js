@@ -21,6 +21,7 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
+        console.log('req.body', req.body);
         // checking if the token is missing
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized!');
@@ -43,11 +44,16 @@ const auth = (...requiredRoles) => {
         if (userStatus === 'blocked') {
             throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'This user is blocked ! !');
         }
-        if (user.passwordChangedAt &&
-            user_model_1.User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat)) {
-            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized !');
-        }
-        if (requiredRoles && !requiredRoles.includes(role)) {
+        // if (
+        //   user.passwordChangedAt &&
+        //   User.isJWTIssuedBeforePasswordChanged(
+        //     user.passwordChangedAt,
+        //     iat as number,
+        //   )
+        // ) {
+        //   throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !');
+        // }
+        if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized  hi!');
         }
         req.user = decoded;

@@ -23,7 +23,7 @@ const user_model_1 = require("../User/user.model");
 const auth_utils_1 = require("./auth.utils");
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
-    const user = yield user_model_1.User.isUserExistsByCustomId(payload.id);
+    const user = yield user_model_1.User.isUserExistsByEmail(payload.email);
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
     }
@@ -43,6 +43,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     //create token and sent to the  client
     const jwtPayload = {
         userId: user.id,
+        _id: user._id,
         role: user.role,
     };
     const accessToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);

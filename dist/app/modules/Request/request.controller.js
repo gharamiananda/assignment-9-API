@@ -44,13 +44,12 @@ const updateStatusRequest = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result
     });
 }));
-const donorFilterableFields = ['bloodType', 'searchTerm', 'bloodType', 'availability'];
 const getDonorList = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield request_service_1.RequestServices.getDonorListFromDB(req.query);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Academic departments are retrieved successfully',
+        message: 'Requests are retrieved successfully',
         meta: result.meta,
         data: result.result,
     });

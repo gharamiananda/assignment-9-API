@@ -33,7 +33,7 @@ const createDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Admin is created successfully',
+        message: 'Donor is created successfully',
         data: result,
     });
 }));

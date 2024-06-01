@@ -74,7 +74,6 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
     var _b;
     // create a user object
     const userData = {};
-    console.log('userData', { userData, payload });
     //set student role
     userData.role = 'donor';
     userData.username = payload.username;
@@ -85,7 +84,8 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
     try {
         session.startTransaction();
         //set  generated id
-        userData.id = yield (0, user_utils_1.generateAdminId)();
+        userData.id = yield (0, user_utils_1.generateDonorId)();
+        console.log('userData', { userData });
         if (file) {
             const imageName = `${userData.id}${(_b = payload === null || payload === void 0 ? void 0 : payload.name) === null || _b === void 0 ? void 0 : _b.firstName}`;
             const path = file === null || file === void 0 ? void 0 : file.path;
@@ -95,15 +95,19 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
         }
         // create a user (transaction-1)
         const newUser = yield user_model_1.User.create([userData], { session });
+        // console.log('newUser', newUser)
         //create a admin
         if (!newUser.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
         // set id , _id as user
         payload.id = newUser[0].id;
-        payload.user = newUser[0]._id; //reference _id
+        payload.user = newUser[0]._id;
+        payload.username = payload.username;
+        payload.password = payload.password;
+        console.log('payload', payload);
         // create a admin (transaction-2)
-        const newDonor = yield donor_model_1.Donor.create([payload], { session });
+        const newDonor = yield donor_model_1.Donor.create([Object.assign(Object.assign({}, payload), { role: 'donor' })], { session });
         if (!newDonor.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
         }
