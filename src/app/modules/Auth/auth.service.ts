@@ -50,7 +50,7 @@ const loginUser = async (payload: TLoginUser) => {
     config.jwt_access_expires_in as string,
   );
 
-  const refreshToken = createToken(
+  const bloodAssigRefreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_secret as string,
     config.jwt_refresh_expires_in as string,
@@ -58,8 +58,9 @@ const loginUser = async (payload: TLoginUser) => {
 
   return {
     accessToken,
-    refreshToken,
+    bloodAssigRefreshToken,
     needsPasswordChange: user?.needsPasswordChange,
+    id:user._id
   };
 };
 
@@ -115,7 +116,7 @@ const changePassword = async (
   return null;
 };
 
-const refreshToken = async (token: string) => {
+const bloodAssigRefreshToken = async (token: string) => {
   // checking if the given token is valid
   const decoded = verifyToken(token, config.jwt_refresh_secret as string);
 
@@ -261,7 +262,7 @@ const resetPassword = async (
 export const AuthServices = {
   loginUser,
   changePassword,
-  refreshToken,
+  bloodAssigRefreshToken,
   forgetPassword,
   resetPassword,
 };

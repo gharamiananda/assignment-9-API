@@ -31,9 +31,10 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const auth_service_1 = require("./auth.service");
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('eq.body', req.body);
     const result = yield auth_service_1.AuthServices.loginUser(req.body);
-    const { refreshToken, accessToken, needsPasswordChange } = result;
-    res.cookie('refreshToken', refreshToken, {
+    const { bloodAssigRefreshToken, accessToken, needsPasswordChange, id } = result;
+    res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, {
         secure: config_1.default.NODE_ENV === 'production',
         httpOnly: true,
         sameSite: 'none',
@@ -46,6 +47,8 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: {
             accessToken,
             needsPasswordChange,
+            bloodAssigRefreshToken,
+            id
         },
     });
 }));
@@ -59,9 +62,9 @@ const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         data: result,
     });
 }));
-const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { refreshToken } = req.cookies;
-    const result = yield auth_service_1.AuthServices.refreshToken(refreshToken);
+const bloodAssigRefreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bloodAssigRefreshToken } = req.cookies;
+    const result = yield auth_service_1.AuthServices.bloodAssigRefreshToken(bloodAssigRefreshToken);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -95,7 +98,7 @@ const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 exports.AuthControllers = {
     loginUser,
     changePassword,
-    refreshToken,
+    bloodAssigRefreshToken,
     forgetPassword,
     resetPassword,
 };

@@ -36,14 +36,14 @@ const donorSchema = new mongoose_1.Schema({
         required: [true, 'ID is required'],
         unique: true,
     },
-    donorRequests: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'User',
-        }],
-    requesterRequests: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'User',
-        }],
+    // donorRequests: [{
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    // }],
+    // requesterRequests:[ {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    // }],
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],

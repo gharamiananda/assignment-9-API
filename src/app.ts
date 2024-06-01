@@ -14,14 +14,27 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser());
+const whitelist = ['http://example1.com', 'http://example2.com','http://localhost:5173','http://localhost:3000']
+const corsOptions = {
+  origin: function (origin:any, callback:any) {
+    // if (whitelist.indexOf(origin) !== -1) {
+    if (true) {
 
-app.use(cors({ origin: ['http://localhost:5173','http://localhost:3000'], credentials: true }));
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+ 
+
+app.use(cors(corsOptions));
 
 // application routes
 app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hi Next Level Developer !');
+  res.send('Welcome to the Blood Donation API!');
 });
 
 app.use(globalErrorHandler);

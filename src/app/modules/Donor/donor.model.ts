@@ -29,18 +29,18 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       unique: true,
     },
    
-    donorRequests: [{
-      type: Schema.Types.ObjectId,
+    // donorRequests: [{
+    //   type: Schema.Types.ObjectId,
   
   
-      ref: 'User',
-    }],
-    requesterRequests:[ {
-      type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    // }],
+    // requesterRequests:[ {
+    //   type: Schema.Types.ObjectId,
     
      
-      ref: 'User',
-    }],
+    //   ref: 'User',
+    // }],
   
     name: {
       type: userNameSchema,

@@ -55,4 +55,11 @@ router.get(
   ),
   UserControllers.getMe,
 );
+
+
+
+router.get(
+  '/donor-list',
+  UserControllers.getDonorList,
+);
 export const UserRoutes = router;

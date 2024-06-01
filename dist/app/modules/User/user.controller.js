@@ -29,7 +29,7 @@ const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const createDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const donorData = req.body;
-    const result = yield user_service_1.UserServices.createDonorIntoDB(req.file, donorData);
+    const [result] = yield user_service_1.UserServices.createDonorIntoDB(req.file, donorData);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

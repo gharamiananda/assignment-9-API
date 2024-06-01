@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { USER_ROLE } from '../User/user.constant';
@@ -9,6 +9,13 @@ const router = express.Router();
 
 router.post(
   '/login',
+
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   // req.body = JSON.parse(req.body.data);
+
+  //   console.log('req.body logimmm', req.body)
+  //   next();
+  // },
   validateRequest(AuthValidation.loginValidationSchema),
   AuthControllers.loginUser,
 );
@@ -27,8 +34,8 @@ router.post(
 
 router.post(
   '/refresh-token',
-  validateRequest(AuthValidation.refreshTokenValidationSchema),
-  AuthControllers.refreshToken,
+  validateRequest(AuthValidation.bloodAssigRefreshTokenValidationSchema),
+  AuthControllers.bloodAssigRefreshToken,
 );
 
 router.post(

@@ -17,11 +17,23 @@ const app = (0, express_1.default)();
 //parsers
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: ['http://localhost:5173', 'http://localhost:3000'], credentials: true }));
+const whitelist = ['http://example1.com', 'http://example2.com', 'http://localhost:5173', 'http://localhost:3000'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        // if (whitelist.indexOf(origin) !== -1) {
+        if (true) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+app.use((0, cors_1.default)(corsOptions));
 // application routes
 app.use('/api/v1', routes_1.default);
 app.get('/', (req, res) => {
-    res.send('Hi Next Level Developer !');
+    res.send('Welcome to the Blood Donation API!');
 });
 app.use(globalErrorhandler_1.default);
 //Not Found

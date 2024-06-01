@@ -89,7 +89,7 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
         if (file) {
             const imageName = `${userData.id}${(_b = payload === null || payload === void 0 ? void 0 : payload.name) === null || _b === void 0 ? void 0 : _b.firstName}`;
             const path = file === null || file === void 0 ? void 0 : file.path;
-            //send image to cloudinary
+            //send image to cloudinaryresult
             const { secure_url } = yield (0, sendImageToCloudinary_1.sendImageToCloudinary)(imageName, path);
             payload.profileImg = secure_url;
         }
@@ -116,6 +116,7 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
         return newDonor;
     }
     catch (err) {
+        console.log('err', err);
         yield session.abortTransaction();
         yield session.endSession();
         throw new Error(err);

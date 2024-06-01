@@ -35,8 +35,8 @@ export type TDonor = {
   profileImg?: string;
   isDeleted: boolean;
 
-  donorRequests  :  Types.ObjectId;
-  requesterRequests: Types.ObjectId
+  // donorRequests  :  Types.ObjectId;
+  // requesterRequests: Types.ObjectId
 };
 
 export interface DonorModel extends Model<TDonor> {

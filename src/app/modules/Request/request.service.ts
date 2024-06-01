@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JwtPayload } from "jsonwebtoken";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { User } from "../User/user.model";
