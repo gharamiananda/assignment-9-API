@@ -1,12 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { AdminSearchableFields } from '../Admin/admin.constant';
-import { TAdmin } from '../Admin/admin.interface';
 import { Admin } from '../Admin/admin.model';
 import { User } from '../User/user.model';
+import { Donor } from './donor.model';
+import { TDonor } from './donor.interface';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminQuery = new QueryBuilder(Admin.find(), query)
@@ -29,11 +33,20 @@ const getSingleAdminFromDB = async (id: string) => {
   return result;
 };
 
-const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
-  const { name, ...remainingAdminData } = payload;
+
+const getSingleDonorByUsernameFromDB = async (username: string) => {
+  const result = await Donor.findOne({username:username});
+  return result;
+};
+
+
+const updateDonorIntoDB = async (id: string, payload: Partial<TDonor>,file:any) => {
+
+  console.log('payload upadte', payload,id)
+  const {username, name,email,id:customId, user,...remainingAdminData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
-    ...remainingAdminData,
+    ...remainingAdminData
   };
 
   if (name && Object.keys(name).length) {
@@ -41,8 +54,16 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
+  if (file) {
+    const imageName = `${id}${payload?.name?.firstName}`;
+    const path = file?.path;
+    //send image to cloudinaryresult
+    const { secure_url } = await sendImageToCloudinary(imageName, path);
+    modifiedUpdatedData.profileImg = secure_url as string;
+  }
+  console.log('modifiedUpdatedData', modifiedUpdatedData)
 
-  const result = await Admin.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Donor.findOneAndUpdate({id: id }, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
@@ -89,9 +110,10 @@ const deleteAdminFromDB = async (id: string) => {
   }
 };
 
-export const AdminServices = {
+export const DonorServices = {
   getAllAdminsFromDB,
   getSingleAdminFromDB,
-  updateAdminIntoDB,
+  updateDonorIntoDB,
+  getSingleDonorByUsernameFromDB,
   deleteAdminFromDB,
 };

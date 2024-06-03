@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { RequestModel, TRequest } from './request.interface';
+import { BloodGroup } from '../Donor/donor.constant';
 
 
 const requestSchema = new Schema<TRequest, RequestModel>(
@@ -32,6 +33,13 @@ const requestSchema = new Schema<TRequest, RequestModel>(
     reason: {
       type: String,
       required: true,
+    },
+    bloogGroup: {
+      type: String,
+      enum: {
+        values: BloodGroup,
+        message: '{VALUE} is not a valid blood group',
+      },
     },
     requestStatus: {
       type: String,

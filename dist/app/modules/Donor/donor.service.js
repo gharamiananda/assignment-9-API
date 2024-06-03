@@ -23,7 +23,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminServices = void 0;
+exports.DonorServices = void 0;
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -32,6 +34,8 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const admin_constant_1 = require("../Admin/admin.constant");
 const admin_model_1 = require("../Admin/admin.model");
 const user_model_1 = require("../User/user.model");
+const donor_model_1 = require("./donor.model");
+const sendImageToCloudinary_1 = require("../../utils/sendImageToCloudinary");
 const getAllAdminsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const adminQuery = new QueryBuilder_1.default(admin_model_1.Admin.find(), query)
         .search(admin_constant_1.AdminSearchableFields)
@@ -50,15 +54,29 @@ const getSingleAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function*
     const result = yield admin_model_1.Admin.findById(id);
     return result;
 });
-const updateAdminIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name } = payload, remainingAdminData = __rest(payload, ["name"]);
+const getSingleDonorByUsernameFromDB = (username) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield donor_model_1.Donor.findOne({ username: username });
+    return result;
+});
+const updateDonorIntoDB = (id, payload, file) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    console.log('payload upadte', payload, id);
+    const { username, name, email, id: customId, user } = payload, remainingAdminData = __rest(payload, ["username", "name", "email", "id", "user"]);
     const modifiedUpdatedData = Object.assign({}, remainingAdminData);
     if (name && Object.keys(name).length) {
         for (const [key, value] of Object.entries(name)) {
             modifiedUpdatedData[`name.${key}`] = value;
         }
     }
-    const result = yield admin_model_1.Admin.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+    if (file) {
+        const imageName = `${id}${(_a = payload === null || payload === void 0 ? void 0 : payload.name) === null || _a === void 0 ? void 0 : _a.firstName}`;
+        const path = file === null || file === void 0 ? void 0 : file.path;
+        //send image to cloudinaryresult
+        const { secure_url } = yield (0, sendImageToCloudinary_1.sendImageToCloudinary)(imageName, path);
+        modifiedUpdatedData.profileImg = secure_url;
+    }
+    console.log('modifiedUpdatedData', modifiedUpdatedData);
+    const result = yield donor_model_1.Donor.findOneAndUpdate({ id: id }, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });
@@ -88,9 +106,10 @@ const deleteAdminFromDB = (id) => __awaiter(void 0, void 0, void 0, function* ()
         throw new Error(err);
     }
 });
-exports.AdminServices = {
+exports.DonorServices = {
     getAllAdminsFromDB,
     getSingleAdminFromDB,
-    updateAdminIntoDB,
+    updateDonorIntoDB,
+    getSingleDonorByUsernameFromDB,
     deleteAdminFromDB,
 };

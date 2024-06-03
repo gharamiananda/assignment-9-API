@@ -52,6 +52,8 @@ router.get(
     USER_ROLE.admin,
     USER_ROLE.faculty,
     USER_ROLE.student,
+    USER_ROLE.donor,
+
   ),
   UserControllers.getMe,
 );

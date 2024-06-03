@@ -120,7 +120,7 @@ const createDonorIntoDB = async (
 
     //create a admin
     if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
     // set id , _id as user
     payload.id = newUser[0].id;
@@ -134,12 +134,12 @@ const createDonorIntoDB = async (
     const newDonor = await Donor.create([{...payload,role:'donor'}], { session });
 
     if (!newDonor.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
 
     await session.commitTransaction();
     await session.endSession();
-
+console.log('newdonor', newDonor)
     return newDonor;
   } catch (err: any) {
 
@@ -179,7 +179,7 @@ const getDonorListFromDB = async ( query: Record<string, unknown>) => {
 
 
   const academicDepartmentQuery = new QueryBuilder(
-    User.find(),
+    Donor.find(),
     query,
   )
     .search(donorFilterableFields)

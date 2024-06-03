@@ -22,7 +22,7 @@ export type TDonor = {
   user: Types.ObjectId;
   username: string;
   password: string;
-
+age:number;
   name: TUserName;
   gender: TGender;
   dateOfBirth?: Date;
@@ -33,8 +33,7 @@ export type TDonor = {
   presentAddress: string;
   permanentAddress: string;
   profileImg?: string;
-  isDeleted: boolean;
-
+  availability:boolean
   // donorRequests  :  Types.ObjectId;
   // requesterRequests: Types.ObjectId
 };

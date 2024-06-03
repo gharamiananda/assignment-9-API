@@ -4,6 +4,7 @@ import { AuthRoutes } from '../modules/Auth/auth.route';
 
 import { RequestRoutes } from '../modules/Request/request.route';
 import { UserRoutes } from '../modules/User/user.route';
+import { DonorRoutes } from '../modules/Donor/donor.route';
 
 const router = Router();
 
@@ -26,6 +27,12 @@ const moduleRoutes = [
     path: '/request',
     route: RequestRoutes,
   },
+  {
+    path: '/donors',
+    route: DonorRoutes,
+  },
+
+  
  
 ];
 

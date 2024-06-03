@@ -24,6 +24,8 @@ const admin_model_1 = require("../Admin/admin.model");
 const donor_model_1 = require("../Donor/donor.model");
 const user_model_1 = require("./user.model");
 const user_utils_1 = require("./user.utils");
+const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
+const request_constant_1 = require("../Request/request.constant");
 const createAdminIntoDB = (file, password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // create a user object
@@ -98,21 +100,20 @@ const createDonorIntoDB = (file, payload) => __awaiter(void 0, void 0, void 0, f
         // console.log('newUser', newUser)
         //create a admin
         if (!newUser.length) {
-            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create donor');
         }
         // set id , _id as user
         payload.id = newUser[0].id;
         payload.user = newUser[0]._id;
-        payload.username = payload.username;
-        payload.password = payload.password;
         console.log('payload', payload);
         // create a admin (transaction-2)
         const newDonor = yield donor_model_1.Donor.create([Object.assign(Object.assign({}, payload), { role: 'donor' })], { session });
         if (!newDonor.length) {
-            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create admin');
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create donor');
         }
         yield session.commitTransaction();
         yield session.endSession();
+        console.log('newdonor', newDonor);
         return newDonor;
     }
     catch (err) {
@@ -138,7 +139,22 @@ const changeStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function
     });
     return result;
 });
+const getDonorListFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const academicDepartmentQuery = new QueryBuilder_1.default(donor_model_1.Donor.find(), query)
+        .search(request_constant_1.donorFilterableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+    const result = yield academicDepartmentQuery.modelQuery;
+    const meta = yield academicDepartmentQuery.countTotal();
+    return {
+        meta,
+        result,
+    };
+});
 exports.UserServices = {
+    getDonorListFromDB,
     createDonorIntoDB,
     createAdminIntoDB,
     getMe,

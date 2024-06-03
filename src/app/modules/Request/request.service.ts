@@ -10,7 +10,7 @@ import { Request } from "./request.model";
 const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: any) => {
 
     console.log('payload', payload)
-    const donarUserData = await User.findById(payload.donorId);
+    const donarUserData = await User.findOne({id:payload.donorId});
 
 
     console.log('donarUserData', donarUserData)

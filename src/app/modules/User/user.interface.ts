@@ -12,7 +12,6 @@ export interface TUser {
   role: 'superAdmin' | 'admin' | 'student' | 'faculty' |'donor';
   status: 'in-progress' | 'blocked';
   isDeleted: boolean;
-  availability: boolean;
 }
 
 export interface UserModel extends Model<TUser> {

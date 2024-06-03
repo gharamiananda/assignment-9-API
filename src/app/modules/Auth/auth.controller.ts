@@ -11,18 +11,27 @@ const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
   const { bloodAssigRefreshToken, accessToken, needsPasswordChange,id } = result;
 
-  res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, {
+  // res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, {
+  //   secure: false,
+  //   httpOnly: true,
+  //   sameSite: 'none',
+  //   maxAge: 1000 * 60 * 60 * 24 * 365,
+  // });
+
+  const cookieOptions = {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-  });
+  };
+
+  res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User is logged in successfully!',
     data: {
+    message: 'User is logged in successfully!',
+
       accessToken,
       needsPasswordChange,
       bloodAssigRefreshToken,
