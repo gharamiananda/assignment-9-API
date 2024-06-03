@@ -95,6 +95,10 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       type: String,
       required: [true, 'Permanent address is required'],
     },
+    donateBlood: {
+      type: Boolean,
+      required: [true, 'donateBlood address is required'],
+    },
     profileImg: { type: String, default: '' },
    
     availability :{

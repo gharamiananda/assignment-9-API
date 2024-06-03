@@ -23,6 +23,7 @@ export const createDonorValidationSchema = z.object({
     bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
     presentAddress: z.string(),
     permanentAddress: z.string(),
+    donateBlood: z.boolean(),
   }),
 });
 
@@ -43,6 +44,7 @@ export const updateDonorValidationSchema = z.object({
       presentAddress: z.string().optional(),
       permanentAddress: z.string().optional(),
       age: z.number().optional(),
+      donateBlood: z.boolean().optional(),
  
   }),
 });

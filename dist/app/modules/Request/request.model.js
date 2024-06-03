@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const mongoose_1 = require("mongoose");
+const donor_constant_1 = require("../Donor/donor.constant");
 const requestSchema = new mongoose_1.Schema({
     donorId: {
         type: String,
@@ -30,6 +31,13 @@ const requestSchema = new mongoose_1.Schema({
     reason: {
         type: String,
         required: true,
+    },
+    bloogGroup: {
+        type: String,
+        enum: {
+            values: donor_constant_1.BloodGroup,
+            message: '{VALUE} is not a valid blood group',
+        },
     },
     requestStatus: {
         type: String,

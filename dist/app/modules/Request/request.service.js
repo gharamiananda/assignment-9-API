@@ -19,7 +19,7 @@ const request_constant_1 = require("./request.constant");
 const request_model_1 = require("./request.model");
 const createRequestIntoDB = (currentUser, payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('payload', payload);
-    const donarUserData = yield user_model_1.User.findById(payload.donorId);
+    const donarUserData = yield user_model_1.User.findOne({ id: payload.donorId });
     console.log('donarUserData', donarUserData);
     const createdRequestData = yield request_model_1.Request.create({
         donorId: payload.donorId,
