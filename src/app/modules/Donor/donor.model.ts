@@ -28,19 +28,25 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       required: [true, 'ID is required'],
       unique: true,
     },
-   
-    donorRequests: [{
+    user: {
       type: Schema.Types.ObjectId,
-  
-  
+      required: [true, 'User id is required'],
+      unique: true,
       ref: 'User',
-    }],
-    requesterRequests:[ {
-      type: Schema.Types.ObjectId,
+    },
+   
+    // donorRequests: [{
+    //   type: Schema.Types.ObjectId,
+  
+  
+    //   ref: 'User',
+    // }],
+    // requesterRequests:[ {
+    //   type: Schema.Types.ObjectId,
     
      
-      ref: 'User',
-    }],
+    //   ref: 'User',
+    // }],
   
     name: {
       type: userNameSchema,
@@ -58,6 +64,15 @@ const donorSchema = new Schema<TDonor, DonorModel>(
     email: {
       type: String,
       required: [true, 'Email is required'],
+      unique: true,
+    },
+    age: {
+      type: Number,
+      required: [true, 'Email is required'],
+    }, 
+    username: {
+      type: String,
+      required: [true, 'Username is required'],
       unique: true,
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
@@ -81,11 +96,11 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       required: [true, 'Permanent address is required'],
     },
     profileImg: { type: String, default: '' },
-    isDeleted: {
+   
+    availability :{
       type: Boolean,
-      default: false,
-    },
-
+      default: true,
+    }
   },
   {
     toJSON: {

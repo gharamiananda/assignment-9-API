@@ -8,17 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,19 +18,22 @@ const user_model_1 = require("../User/user.model");
 const request_constant_1 = require("./request.constant");
 const request_model_1 = require("./request.model");
 const createRequestIntoDB = (currentUser, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const donarUserData = __rest(yield user_model_1.User.findOne({ id: payload.donorId }), []);
+    console.log('payload', payload);
+    const donarUserData = yield user_model_1.User.findById(payload.donorId);
+    console.log('donarUserData', donarUserData);
     const createdRequestData = yield request_model_1.Request.create({
-        data: {
-            donorId: payload.donorId,
-            phoneNumber: payload.phoneNumber,
-            dateOfDonation: payload.dateOfDonation,
-            hospitalName: payload.hospitalName,
-            hospitalAddress: payload.hospitalAddress,
-            reason: payload.reason,
-            requesterId: currentUser === null || currentUser === void 0 ? void 0 : currentUser.userId
-        }
+        donorId: payload.donorId,
+        phoneNumber: payload.phoneNumber,
+        dateOfDonation: payload.dateOfDonation,
+        hospitalName: payload.hospitalName,
+        hospitalAddress: payload.hospitalAddress,
+        reason: payload.reason,
+        requesterId: currentUser === null || currentUser === void 0 ? void 0 : currentUser._id
     });
-    return Object.assign(Object.assign({}, createdRequestData), { donor: donarUserData });
+    return {
+        requestData: createdRequestData,
+        donor: donarUserData
+    };
 });
 const getMyDonorRequestsFromDB = (currentUser) => __awaiter(void 0, void 0, void 0, function* () {
     const request = yield request_model_1.Request.find({ donorId: currentUser.userId });
@@ -49,7 +41,7 @@ const getMyDonorRequestsFromDB = (currentUser) => __awaiter(void 0, void 0, void
 });
 const getDonorListFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const academicDepartmentQuery = new QueryBuilder_1.default(request_model_1.Request.find(), query)
-        .search(request_constant_1.RequestSearchableFields)
+        .search(request_constant_1.donorFilterableFields)
         .filter()
         .sort()
         .paginate()

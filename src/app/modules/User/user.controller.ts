@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
+import { Request, RequestHandler, Response } from 'express';
 
 
 
@@ -25,7 +26,7 @@ const createAdmin = catchAsync(async (req, res) => {
 const createDonor = catchAsync(async (req, res) => {
   const  donorData  = req.body;
 
-  const result = await UserServices.createDonorIntoDB(
+  const [result] = await UserServices.createDonorIntoDB(
     req.file,
    
    donorData,
@@ -63,10 +64,28 @@ const changeStatus = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
+
+const getDonorList: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+   
+  const result =
+  await UserServices.getDonorListFromDB(req.query);
+sendResponse(res, {
+  statusCode: httpStatus.OK,
+  success: true,
+  message: 'Donors are retrieved successfully',
+  meta: result.meta,
+  data: result.result,
+});
+})
+
 export const UserControllers = {
 
   createDonor,
   createAdmin,
   getMe,
   changeStatus,
+  getDonorList
 };

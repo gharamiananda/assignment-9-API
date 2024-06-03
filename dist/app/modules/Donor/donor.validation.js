@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminValidations = exports.updateAdminValidationSchema = exports.createDonorValidationSchema = void 0;
+exports.AdminValidations = exports.updateDonorValidationSchema = exports.createDonorValidationSchema = void 0;
 const zod_1 = require("zod");
 const donor_constant_1 = require("./donor.constant");
 const createUserNameValidationSchema = zod_1.z.object({
@@ -12,6 +12,7 @@ exports.createDonorValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
         password: zod_1.z.string().max(20),
         username: zod_1.z.string().max(20),
+        age: zod_1.z.number(),
         name: createUserNameValidationSchema,
         gender: zod_1.z.enum([...donor_constant_1.Gender]),
         dateOfBirth: zod_1.z.string().optional(),
@@ -28,24 +29,20 @@ const updateUserNameValidationSchema = zod_1.z.object({
     middleName: zod_1.z.string().min(3).max(20).optional(),
     lastName: zod_1.z.string().min(3).max(20).optional(),
 });
-exports.updateAdminValidationSchema = zod_1.z.object({
+exports.updateDonorValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
-        admin: zod_1.z.object({
-            name: updateUserNameValidationSchema,
-            designation: zod_1.z.string().max(30).optional(),
-            gender: zod_1.z.enum([...donor_constant_1.Gender]).optional(),
-            dateOfBirth: zod_1.z.string().optional(),
-            email: zod_1.z.string().email().optional(),
-            contactNo: zod_1.z.string().optional(),
-            emergencyContactNo: zod_1.z.string().optional(),
-            bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]).optional(),
-            presentAddress: zod_1.z.string().optional(),
-            permanentAddress: zod_1.z.string().optional(),
-            // profileImg: z.string().optional(),
-        }),
+        name: updateUserNameValidationSchema,
+        gender: zod_1.z.enum([...donor_constant_1.Gender]).optional(),
+        dateOfBirth: zod_1.z.string().optional(),
+        contactNo: zod_1.z.string().optional(),
+        emergencyContactNo: zod_1.z.string().optional(),
+        bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]).optional(),
+        presentAddress: zod_1.z.string().optional(),
+        permanentAddress: zod_1.z.string().optional(),
+        age: zod_1.z.number().optional(),
     }),
 });
 exports.AdminValidations = {
     createDonorValidationSchema: exports.createDonorValidationSchema,
-    updateAdminValidationSchema: exports.updateAdminValidationSchema,
+    updateDonorValidationSchema: exports.updateDonorValidationSchema,
 };

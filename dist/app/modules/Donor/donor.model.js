@@ -42,18 +42,14 @@ const donorSchema = new mongoose_1.Schema({
         unique: true,
         ref: 'User',
     },
-    donorRequests: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            required: [true, 'User id is required'],
-            unique: true,
-            ref: 'User',
-        }],
-    requesterRequests: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            required: [true, 'User id is required'],
-            unique: true,
-            ref: 'User',
-        }],
+    // donorRequests: [{
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    // }],
+    // requesterRequests:[ {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    // }],
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],
@@ -70,6 +66,15 @@ const donorSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
+        unique: true,
+    },
+    age: {
+        type: Number,
+        required: [true, 'Email is required'],
+    },
+    username: {
+        type: String,
+        required: [true, 'Username is required'],
         unique: true,
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
@@ -92,10 +97,10 @@ const donorSchema = new mongoose_1.Schema({
         required: [true, 'Permanent address is required'],
     },
     profileImg: { type: String, default: '' },
-    isDeleted: {
+    availability: {
         type: Boolean,
-        default: false,
-    },
+        default: true,
+    }
 }, {
     toJSON: {
         virtuals: true,

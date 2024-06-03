@@ -11,6 +11,8 @@ export const createDonorValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20),
     username: z.string().max(20),
+    age: z.number(),
+
    
     name: createUserNameValidationSchema,
     gender: z.enum([...Gender] as [string, ...string[]]),
@@ -30,25 +32,22 @@ const updateUserNameValidationSchema = z.object({
   lastName: z.string().min(3).max(20).optional(),
 });
 
-export const updateAdminValidationSchema = z.object({
+export const updateDonorValidationSchema = z.object({
   body: z.object({
-    admin: z.object({
       name: updateUserNameValidationSchema,
-      designation: z.string().max(30).optional(),
       gender: z.enum([...Gender] as [string, ...string[]]).optional(),
       dateOfBirth: z.string().optional(),
-      email: z.string().email().optional(),
       contactNo: z.string().optional(),
       emergencyContactNo: z.string().optional(),
       bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
       presentAddress: z.string().optional(),
       permanentAddress: z.string().optional(),
-      // profileImg: z.string().optional(),
-    }),
+      age: z.number().optional(),
+ 
   }),
 });
 
 export const AdminValidations = {
   createDonorValidationSchema,
-  updateAdminValidationSchema,
+  updateDonorValidationSchema,
 };

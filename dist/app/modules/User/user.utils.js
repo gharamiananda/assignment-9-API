@@ -58,7 +58,7 @@ const generateDonorId = () => __awaiter(void 0, void 0, void 0, function* () {
         currentId = lastDonorId.substring(2);
     }
     let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
-    incrementId = `A-${incrementId}`;
+    incrementId = `D-${incrementId}`;
     return incrementId;
 });
 exports.generateDonorId = generateDonorId;

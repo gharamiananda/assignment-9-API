@@ -15,10 +15,8 @@ import {
   generateAdminId,
   generateDonorId,
 } from './user.utils';
-
-
-
-
+import QueryBuilder from '../../builder/QueryBuilder';
+import { donorFilterableFields } from '../Request/request.constant';
 
 const createAdminIntoDB = async (
   file: any,
@@ -110,7 +108,7 @@ const createDonorIntoDB = async (
     if (file) {
       const imageName = `${userData.id}${payload?.name?.firstName}`;
       const path = file?.path;
-      //send image to cloudinary
+      //send image to cloudinaryresult
       const { secure_url } = await sendImageToCloudinary(imageName, path);
       payload.profileImg = secure_url as string;
     }
@@ -122,15 +120,13 @@ const createDonorIntoDB = async (
 
     //create a admin
     if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; 
     
 
-    payload.username = payload.username;
-    payload.password = payload.password;
 
     console.log('payload', payload)
 
@@ -138,14 +134,16 @@ const createDonorIntoDB = async (
     const newDonor = await Donor.create([{...payload,role:'donor'}], { session });
 
     if (!newDonor.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create admin');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create donor');
     }
 
     await session.commitTransaction();
     await session.endSession();
-
+console.log('newdonor', newDonor)
     return newDonor;
   } catch (err: any) {
+
+    console.log('err', err)
     await session.abortTransaction();
     await session.endSession();
     throw new Error(err);
@@ -165,7 +163,6 @@ const getMe = async (userId: string, role: string) => {
 
   return result;
 };
-
 const changeStatus = async (id: string, payload: { status: string }) => {
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
@@ -173,8 +170,35 @@ const changeStatus = async (id: string, payload: { status: string }) => {
   return result;
 };
 
-export const UserServices = {
 
+
+
+
+const getDonorListFromDB = async ( query: Record<string, unknown>) => {
+
+
+
+  const academicDepartmentQuery = new QueryBuilder(
+    Donor.find(),
+    query,
+  )
+    .search(donorFilterableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await academicDepartmentQuery.modelQuery;
+  const meta = await academicDepartmentQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
+
+export const UserServices = {
+  getDonorListFromDB,
   createDonorIntoDB,
   createAdminIntoDB,
   getMe,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JwtPayload } from "jsonwebtoken";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { User } from "../User/user.model";
@@ -8,7 +9,7 @@ import { Request } from "./request.model";
 const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: any) => {
 
     console.log('payload', payload)
-    const donarUserData = await User.findById(payload.donorId);
+    const donarUserData = await User.findOne({id:payload.donorId});
 
 
     console.log('donarUserData', donarUserData)

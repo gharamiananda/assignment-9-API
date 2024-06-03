@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { TBloodGroup } from '../Donor/donor.interface';
 
 
 
@@ -16,6 +17,8 @@ export type TRequest = {
   hospitalAddress: string;
   reason: string;
   requestStatus: TRequestStatus;
+  bloogGroup?: TBloodGroup;
+
 };
 
 export interface RequestModel extends Model<TRequest> {

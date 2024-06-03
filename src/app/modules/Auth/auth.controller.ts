@@ -6,23 +6,36 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './auth.service';
 
 const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
-  const { refreshToken, accessToken, needsPasswordChange } = result;
 
-  res.cookie('refreshToken', refreshToken, {
+  console.log('eq.body', req.body)
+  const result = await AuthServices.loginUser(req.body);
+  const { bloodAssigRefreshToken, accessToken, needsPasswordChange,id } = result;
+
+  // res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, {
+  //   secure: false,
+  //   httpOnly: true,
+  //   sameSite: 'none',
+  //   maxAge: 1000 * 60 * 60 * 24 * 365,
+  // });
+
+  const cookieOptions = {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-  });
+  };
+
+  res.cookie('bloodAssigRefreshToken', bloodAssigRefreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User is logged in successfully!',
     data: {
+    message: 'User is logged in successfully!',
+
       accessToken,
       needsPasswordChange,
+      bloodAssigRefreshToken,
+      id
     },
   });
 });
@@ -39,9 +52,9 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
-const refreshToken = catchAsync(async (req, res) => {
-  const { refreshToken } = req.cookies;
-  const result = await AuthServices.refreshToken(refreshToken);
+const bloodAssigRefreshToken = catchAsync(async (req, res) => {
+  const { bloodAssigRefreshToken } = req.cookies;
+  const result = await AuthServices.bloodAssigRefreshToken(bloodAssigRefreshToken);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -81,7 +94,7 @@ const resetPassword = catchAsync(async (req, res) => {
 export const AuthControllers = {
   loginUser,
   changePassword,
-  refreshToken,
+  bloodAssigRefreshToken,
   forgetPassword,
   resetPassword,
 };

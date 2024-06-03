@@ -60,10 +60,6 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
-    availability: {
-        type: Boolean,
-        default: true,
-    }
 }, {
     timestamps: true,
 });
@@ -84,6 +80,11 @@ userSchema.post('save', function (doc, next) {
 userSchema.statics.isUserExistsByCustomId = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield exports.User.findOne({ id }).select('+password');
+    });
+};
+userSchema.statics.isUserExistsByEmail = function (email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.User.findOne({ email: email }).select('+password');
     });
 };
 userSchema.statics.isPasswordMatched = function (plainTextPassword, hashedPassword) {

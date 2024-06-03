@@ -48,10 +48,7 @@ const userSchema = new Schema<TUser, UserModel>(
       type: Boolean,
       default: false,
     },
-   availability :{
-      type: Boolean,
-      default: true,
-    }
+  
   },
   {
     timestamps: true,

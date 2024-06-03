@@ -2,14 +2,14 @@ import { Model, Types } from 'mongoose';
 
 export type TGender = 'male' | 'female' | 'other';
 export type TBloodGroup =
-  | 'A+'
-  | 'A-'
-  | 'B+'
-  | 'B-'
-  | 'AB+'
-  | 'AB-'
-  | 'O+'
-  | 'O-';
+  | 'A_POSITIVE'
+  | 'A_NEGETIVE'
+  | 'B_POSITIVE'
+  | 'B_NEGETIVE'
+  | 'AB_POSITIVE'
+  | 'AB_NEGETIVE'
+  | 'O_POSITIVE'
+  | 'O_NEGETIVE';
 
 export type TUserName = {
   firstName: string;

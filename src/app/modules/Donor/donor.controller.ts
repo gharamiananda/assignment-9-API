@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { AdminServices } from './donor.service';
+import { DonorServices } from './donor.service';
 
 const getSingleAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await AdminServices.getSingleAdminFromDB(id);
+  const result = await DonorServices.getSingleAdminFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -15,8 +15,21 @@ const getSingleAdmin = catchAsync(async (req, res) => {
   });
 });
 
+
+const getDonorByUsername = catchAsync(async (req, res) => {
+  const { username } = req.params;
+  const result = await DonorServices.getSingleDonorByUsernameFromDB(username);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Donor is retrieved successfully',
+    data: result,
+  });
+});
+
 const getAllAdmins = catchAsync(async (req, res) => {
-  const result = await AdminServices.getAllAdminsFromDB(req.query);
+  const result = await DonorServices.getAllAdminsFromDB(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -27,22 +40,26 @@ const getAllAdmins = catchAsync(async (req, res) => {
   });
 });
 
-const updateAdmin = catchAsync(async (req, res) => {
+const updateDonor = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const { admin } = req.body;
-  const result = await AdminServices.updateAdminIntoDB(id, admin);
+  const data = req.body;
+  const result = await DonorServices.updateDonorIntoDB(id, data,
+
+    req.file,
+
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admin is updated successfully',
+    message: 'Donor is updated successfully',
     data: result,
   });
 });
 
 const deleteAdmin = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await AdminServices.deleteAdminFromDB(id);
+  const result = await DonorServices.deleteAdminFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -52,9 +69,10 @@ const deleteAdmin = catchAsync(async (req, res) => {
   });
 });
 
-export const AdminControllers = {
+export const DonorControllers = {
   getAllAdmins,
   getSingleAdmin,
   deleteAdmin,
-  updateAdmin,
+  updateDonor,
+  getDonorByUsername
 };

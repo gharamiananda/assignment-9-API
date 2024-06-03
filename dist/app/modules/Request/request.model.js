@@ -3,11 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const mongoose_1 = require("mongoose");
 const requestSchema = new mongoose_1.Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true,
-    },
     donorId: {
         type: String,
         required: true,
