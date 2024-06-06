@@ -17,6 +17,8 @@ import {
 } from './user.utils';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { donorFilterableFields } from '../Request/request.constant';
+import { JwtPayload } from 'jsonwebtoken';
+import { USER_ROLE } from './user.constant';
 
 const createAdminIntoDB = async (
   file: any,
@@ -159,6 +161,9 @@ const getMe = async (userId: string, role: string) => {
     result = await Admin.findOne({ id: userId }).populate('user');
   }
 
+  if (role === USER_ROLE.superAdmin) {
+    result = await User.findOne({ id: userId })
+  }
 
 
   return result;
@@ -174,12 +179,14 @@ const changeStatus = async (id: string, payload: { status: string }) => {
 
 
 
-const getDonorListFromDB = async ( query: Record<string, unknown>) => {
+const getDonorListFromDB = async ( query: Record<string, unknown>,currentUser:JwtPayload) => {
 
+console.log('currentUser?.userId ', currentUser?.userId )
 
 
   const academicDepartmentQuery = new QueryBuilder(
-    Donor.find(),
+    Donor.find({ id: { $ne: currentUser?.userId } ,wantToDonateBlood:true,availability:true}
+    ),
     query,
   )
     .search(donorFilterableFields)
@@ -197,10 +204,37 @@ const getDonorListFromDB = async ( query: Record<string, unknown>) => {
   };
 };
 
+
+
+
+
+const getUsersListFromDB = async ( query: Record<string, unknown>,currentUser:JwtPayload) => {
+  
+  
+    const academicDepartmentQuery = new QueryBuilder(
+      User.find({ id: { $ne: currentUser?.userId }}),
+      query,
+    )
+      .search(donorFilterableFields)
+      .filter()
+      .sort()
+      .paginate()
+      .fields();
+  
+    const result = await academicDepartmentQuery.modelQuery;
+    const meta = await academicDepartmentQuery.countTotal();
+  
+    return {
+      meta,
+      result,
+    };
+  };
+
 export const UserServices = {
   getDonorListFromDB,
   createDonorIntoDB,
   createAdminIntoDB,
   getMe,
   changeStatus,
+  getUsersListFromDB
 };

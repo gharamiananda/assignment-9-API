@@ -29,11 +29,37 @@ class QueryBuilder<T> {
     const queryObj = { ...this.query }; // copy
 
     // Filtering
-    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields','gender','bloogGroup'];
 
     excludeFields.forEach((el) => delete queryObj[el]);
 
+
+
+
+    if (this.query.gender !== undefined && JSON.parse(this.query.gender as string).length>0 ) {
+        
+      queryObj.gender = { $in: JSON.parse(this.query.gender as string) };
+      
+  }
+
+
+  if (this.query.bloogGroup !== undefined && JSON.parse(this.query.bloogGroup as string).length>0) {
+        
+    queryObj.bloogGroup = { $in: JSON.parse(this.query.bloogGroup as string) };
+    
+}
+
+
+
+
+
+
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+
+
+
+
+
 
     return this;
   }

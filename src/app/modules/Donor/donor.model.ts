@@ -100,7 +100,14 @@ const donorSchema = new Schema<TDonor, DonorModel>(
     availability :{
       type: Boolean,
       default: true,
-    }
+    },
+    wantToDonateBlood :{
+      type: Boolean,
+      default: false,
+      
+
+    },
+    
   },
   {
     toJSON: {

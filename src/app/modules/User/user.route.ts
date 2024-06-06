@@ -60,6 +60,19 @@ router.get(
 
 
 
+
+router.get(
+  '/user-list',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin
+
+  ),
+  UserControllers.getUsersList,
+);
+
+
+
 router.get(
   '/donor-list',
   UserControllers.getDonorList,

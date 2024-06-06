@@ -22,12 +22,28 @@ router.get(
 );
 
 
+
+router.get(
+    '/donation-request-to-me',
+    auth(),
+    RequestController.getRequestsToMe
+);
+
+
 router.put(
     '/donation-request/:requestId',
     auth(),
     validateRequest(statusValidationSchemas.updateStatusRequest),
 
     RequestController.updateStatusRequest
+);
+
+
+router.get(
+    '/my-donation-request-approved-or-not',
+    auth(),
+
+    RequestController.getMyAnyRequestpprovedOrNot
 );
 
 router.get(

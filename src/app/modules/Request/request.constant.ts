@@ -1,2 +1,2 @@
 
-export const donorFilterableFields = ['bloodType', 'searchTerm', 'bloodType','availability','name.firstName','name.middleName','name.lastName'];
+export const donorFilterableFields = ['bloodType','name.firstName','name.middleName','name.lastName','username','email','presentAddress','permanentAddress'];
