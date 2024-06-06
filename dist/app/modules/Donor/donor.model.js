@@ -100,7 +100,11 @@ const donorSchema = new mongoose_1.Schema({
     availability: {
         type: Boolean,
         default: true,
-    }
+    },
+    wantToDonateBlood: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     toJSON: {
         virtuals: true,

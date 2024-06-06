@@ -29,8 +29,14 @@ class QueryBuilder {
     filter() {
         const queryObj = Object.assign({}, this.query); // copy
         // Filtering
-        const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+        const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields', 'gender', 'bloogGroup'];
         excludeFields.forEach((el) => delete queryObj[el]);
+        if (this.query.gender !== undefined && JSON.parse(this.query.gender).length > 0) {
+            queryObj.gender = { $in: JSON.parse(this.query.gender) };
+        }
+        if (this.query.bloogGroup !== undefined && JSON.parse(this.query.bloogGroup).length > 0) {
+            queryObj.bloogGroup = { $in: JSON.parse(this.query.bloogGroup) };
+        }
         this.modelQuery = this.modelQuery.find(queryObj);
         return this;
     }

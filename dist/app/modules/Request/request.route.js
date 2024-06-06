@@ -12,7 +12,9 @@ const request_validation_1 = require("./request.validation");
 const router = express_1.default.Router();
 router.post('/donation-request', (0, auth_1.default)(), (0, validateRequest_1.default)(request_validation_1.statusValidationSchemas.createRequest), request_controller_1.RequestController.createRequest);
 router.get('/donation-request', (0, auth_1.default)(), request_controller_1.RequestController.getMyDonorRequests);
+router.get('/donation-request-to-me', (0, auth_1.default)(), request_controller_1.RequestController.getRequestsToMe);
 router.put('/donation-request/:requestId', (0, auth_1.default)(), (0, validateRequest_1.default)(request_validation_1.statusValidationSchemas.updateStatusRequest), request_controller_1.RequestController.updateStatusRequest);
+router.get('/my-donation-request-approved-or-not', (0, auth_1.default)(), request_controller_1.RequestController.getMyAnyRequestpprovedOrNot);
 router.get('/donor-list', 
 // auth(),
 request_controller_1.RequestController.getDonorList);

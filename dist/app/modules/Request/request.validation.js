@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.statusValidationSchemas = void 0;
 const zod_1 = require("zod");
+const donor_constant_1 = require("../Donor/donor.constant");
 const createRequest = zod_1.z.object({
     body: zod_1.z.object({
         donorId: zod_1.z.string({
@@ -22,6 +23,12 @@ const createRequest = zod_1.z.object({
         reason: zod_1.z.string({
             required_error: 'reason field is required.',
         }),
+        donorName: zod_1.z.string({
+            required_error: 'reason field is required.',
+        }), requesterName: zod_1.z.string({
+            required_error: 'reason field is required.',
+        }),
+        bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]),
     }),
 });
 const updateStatusRequest = zod_1.z.object({

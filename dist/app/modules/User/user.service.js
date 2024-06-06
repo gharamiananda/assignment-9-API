@@ -26,6 +26,7 @@ const user_model_1 = require("./user.model");
 const user_utils_1 = require("./user.utils");
 const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
 const request_constant_1 = require("../Request/request.constant");
+const user_constant_1 = require("./user.constant");
 const createAdminIntoDB = (file, password, payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // create a user object
@@ -131,6 +132,9 @@ const getMe = (userId, role) => __awaiter(void 0, void 0, void 0, function* () {
     if (role === 'admin') {
         result = yield admin_model_1.Admin.findOne({ id: userId }).populate('user');
     }
+    if (role === user_constant_1.USER_ROLE.superAdmin) {
+        result = yield user_model_1.User.findOne({ id: userId });
+    }
     return result;
 });
 const changeStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -139,8 +143,23 @@ const changeStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function
     });
     return result;
 });
-const getDonorListFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const academicDepartmentQuery = new QueryBuilder_1.default(donor_model_1.Donor.find(), query)
+const getDonorListFromDB = (query, currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('currentUser?.userId ', currentUser === null || currentUser === void 0 ? void 0 : currentUser.userId);
+    const academicDepartmentQuery = new QueryBuilder_1.default(donor_model_1.Donor.find({ id: { $ne: currentUser === null || currentUser === void 0 ? void 0 : currentUser.userId }, wantToDonateBlood: true, availability: true }), query)
+        .search(request_constant_1.donorFilterableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+    const result = yield academicDepartmentQuery.modelQuery;
+    const meta = yield academicDepartmentQuery.countTotal();
+    return {
+        meta,
+        result,
+    };
+});
+const getUsersListFromDB = (query, currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+    const academicDepartmentQuery = new QueryBuilder_1.default(user_model_1.User.find({ id: { $ne: currentUser === null || currentUser === void 0 ? void 0 : currentUser.userId } }), query)
         .search(request_constant_1.donorFilterableFields)
         .filter()
         .sort()
@@ -159,4 +178,5 @@ exports.UserServices = {
     createAdminIntoDB,
     getMe,
     changeStatus,
+    getUsersListFromDB
 };

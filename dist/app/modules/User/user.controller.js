@@ -17,6 +17,8 @@ const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const user_service_1 = require("./user.service");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = __importDefault(require("../../config"));
 const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { password, admin: adminData } = req.body;
     const result = yield user_service_1.UserServices.createAdminIntoDB(req.file, password, adminData);
@@ -58,13 +60,49 @@ const changeStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     });
 }));
 const getDonorList = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.getDonorListFromDB(req.query);
+    const token = req.headers.authorization;
+    let user = {};
+    console.log('req.body', req.body);
+    try {
+        if (token) {
+            const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
+            user = decoded;
+            req.user = decoded;
+        }
+    }
+    catch (error) {
+        user = {};
+    }
+    // checking if the given token is valid
+    const result = yield user_service_1.UserServices.getDonorListFromDB(req.query, user);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Donors are retrieved successfully',
         meta: result.meta,
-        data: result.result,
+        data: {
+            statusCode: http_status_1.default.OK,
+            success: true,
+            message: 'Donors are retrieved successfully',
+            meta: result.meta,
+            data: result.result
+        },
+    });
+}));
+const getUsersList = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.getUsersListFromDB(req.query, req.user);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Users are retrieved successfully',
+        meta: result.meta,
+        data: {
+            statusCode: http_status_1.default.OK,
+            success: true,
+            message: 'Users are retrieved successfully',
+            meta: result.meta,
+            data: result.result
+        },
     });
 }));
 exports.UserControllers = {
@@ -72,5 +110,6 @@ exports.UserControllers = {
     createAdmin,
     getMe,
     changeStatus,
-    getDonorList
+    getDonorList,
+    getUsersList
 };

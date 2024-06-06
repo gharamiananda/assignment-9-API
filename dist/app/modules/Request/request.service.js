@@ -19,8 +19,8 @@ const request_constant_1 = require("./request.constant");
 const request_model_1 = require("./request.model");
 const createRequestIntoDB = (currentUser, payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('payload', payload);
-    const donarUserData = yield user_model_1.User.findById(payload.donorId);
-    console.log('donarUserData', donarUserData);
+    const donarUserData = yield user_model_1.User.findOne({ id: payload.donorId });
+    console.log('currentUser', currentUser);
     const createdRequestData = yield request_model_1.Request.create({
         donorId: payload.donorId,
         phoneNumber: payload.phoneNumber,
@@ -28,7 +28,10 @@ const createRequestIntoDB = (currentUser, payload) => __awaiter(void 0, void 0, 
         hospitalName: payload.hospitalName,
         hospitalAddress: payload.hospitalAddress,
         reason: payload.reason,
-        requesterId: currentUser === null || currentUser === void 0 ? void 0 : currentUser._id
+        requesterId: currentUser === null || currentUser === void 0 ? void 0 : currentUser.userId,
+        bloogGroup: payload.bloogGroup,
+        requesterName: payload.requesterName,
+        donorName: payload.donorName
     });
     return {
         requestData: createdRequestData,
@@ -36,6 +39,11 @@ const createRequestIntoDB = (currentUser, payload) => __awaiter(void 0, void 0, 
     };
 });
 const getMyDonorRequestsFromDB = (currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+    const request = yield request_model_1.Request.find({ requesterId: currentUser.userId });
+    return request;
+});
+const getRequestsToMeFromDB = (currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('currentUser', currentUser);
     const request = yield request_model_1.Request.find({ donorId: currentUser.userId });
     return request;
 });
@@ -53,13 +61,22 @@ const getDonorListFromDB = (query) => __awaiter(void 0, void 0, void 0, function
         result,
     };
 });
+const getAnyRequestsApprovedOrNotFromDB = (currentUser) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('currentUser', currentUser);
+    const request = yield request_model_1.Request.find({ requesterId: currentUser.userId, requestStatus: 'APPROVED' });
+    return request;
+});
 const updateStatusRequestIntoDB = (requestId, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const request = yield request_model_1.Request.findOneAndUpdate({ id: requestId }, { requestStatus: payload === null || payload === void 0 ? void 0 : payload.status });
+    const request = yield request_model_1.Request.findByIdAndUpdate(requestId, { requestStatus: payload === null || payload === void 0 ? void 0 : payload.status }, {
+        new: true,
+    });
     return { request };
 });
 exports.RequestServices = {
     createRequestIntoDB,
     getMyDonorRequestsFromDB,
     updateStatusRequestIntoDB,
-    getDonorListFromDB
+    getDonorListFromDB,
+    getRequestsToMeFromDB,
+    getAnyRequestsApprovedOrNotFromDB
 };

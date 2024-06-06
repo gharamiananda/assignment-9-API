@@ -22,6 +22,7 @@ exports.createDonorValidationSchema = zod_1.z.object({
         bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]),
         presentAddress: zod_1.z.string(),
         permanentAddress: zod_1.z.string(),
+        wantToDonateBlood: zod_1.z.any()
     }),
 });
 const updateUserNameValidationSchema = zod_1.z.object({
@@ -40,6 +41,7 @@ exports.updateDonorValidationSchema = zod_1.z.object({
         presentAddress: zod_1.z.string().optional(),
         permanentAddress: zod_1.z.string().optional(),
         age: zod_1.z.number().optional(),
+        wantToDonateBlood: zod_1.z.any().optional()
     }),
 });
 exports.AdminValidations = {

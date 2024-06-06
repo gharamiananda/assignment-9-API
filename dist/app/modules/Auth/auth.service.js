@@ -59,6 +59,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 const changePassword = (userData, payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
     const user = yield user_model_1.User.isUserExistsByCustomId(userData.userId);
+    console.log('user', user);
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
     }

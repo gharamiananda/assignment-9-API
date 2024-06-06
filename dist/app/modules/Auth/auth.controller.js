@@ -65,7 +65,12 @@ const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Password is updated successfully!',
-        data: result,
+        data: {
+            statusCode: http_status_1.default.OK,
+            success: true,
+            message: 'Password is updated successfully!',
+            data: result
+        },
     });
 }));
 const bloodAssigRefreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

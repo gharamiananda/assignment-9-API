@@ -27,5 +27,6 @@ router.post('/create-admin', (0, auth_1.default)(user_constant_1.USER_ROLE.super
 }, (0, validateRequest_1.default)(admin_validation_1.createAdminValidationSchema), user_controller_1.UserControllers.createAdmin);
 router.post('/change-status/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.superAdmin, user_constant_1.USER_ROLE.admin), (0, validateRequest_1.default)(user_validation_1.UserValidation.changeStatusValidationSchema), user_controller_1.UserControllers.changeStatus);
 router.get('/me', (0, auth_1.default)(user_constant_1.USER_ROLE.superAdmin, user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.faculty, user_constant_1.USER_ROLE.student, user_constant_1.USER_ROLE.donor), user_controller_1.UserControllers.getMe);
+router.get('/user-list', (0, auth_1.default)(user_constant_1.USER_ROLE.superAdmin, user_constant_1.USER_ROLE.admin), user_controller_1.UserControllers.getUsersList);
 router.get('/donor-list', user_controller_1.UserControllers.getDonorList);
 exports.UserRoutes = router;

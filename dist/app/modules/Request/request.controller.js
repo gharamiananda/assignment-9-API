@@ -23,11 +23,34 @@ const createRequest = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Request successfully made",
-        data: result
+        data: {
+            statusCode: http_status_1.default.OK,
+            success: true,
+            message: "Request successfully made",
+            data: result
+        }
     });
 }));
 const getMyDonorRequests = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield request_service_1.RequestServices.getMyDonorRequestsFromDB(req.user);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Donation requests retrieved successfully",
+        data: result
+    });
+}));
+const getMyAnyRequestpprovedOrNot = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield request_service_1.RequestServices.getAnyRequestsApprovedOrNotFromDB(req.user);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Donation requests retrieved successfully",
+        data: result
+    });
+}));
+const getRequestsToMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield request_service_1.RequestServices.getRequestsToMeFromDB(req.user);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -41,7 +64,11 @@ const updateStatusRequest = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Donation request status successfully updated",
-        data: result
+        data: { data: result,
+            statusCode: http_status_1.default.OK,
+            success: true,
+            message: "Donation request status successfully updated",
+        }
     });
 }));
 const getDonorList = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,5 +85,7 @@ exports.RequestController = {
     createRequest,
     getMyDonorRequests,
     updateStatusRequest,
-    getDonorList
+    getDonorList,
+    getRequestsToMe,
+    getMyAnyRequestpprovedOrNot
 };
