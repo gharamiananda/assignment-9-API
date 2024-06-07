@@ -10,6 +10,15 @@ const requestSchema = new Schema<TRequest, RequestModel>(
       type: String,
       required: true,
     },
+    donorName: {
+      type: String,
+      required: true,
+    },requesterName: {
+      type: String,
+      required: true,
+    },
+    
+    
     requesterId: {
       type: String,
       required: true,

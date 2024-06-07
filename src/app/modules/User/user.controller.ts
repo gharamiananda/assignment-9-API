@@ -3,6 +3,8 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
 import { Request, RequestHandler, Response } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import config from '../../config';
 
 
 
@@ -69,17 +71,73 @@ const changeStatus = catchAsync(async (req, res) => {
 
 
 const getDonorList: RequestHandler = catchAsync(async (req: Request, res: Response) => {
-   
+  const token = req.headers.authorization;
+  let user:JwtPayload={}
+
+  console.log('req.body', req.body)
+
+  try {
+    if(token){
+
+
+      const decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+    
+      user=decoded
+      req.user = decoded as JwtPayload & { role: string };
+      }
+    
+    
+  } catch (error) {
+    user={}
+  }
+
+
+  // checking if the given token is valid
+ 
+
+
   const result =
-  await UserServices.getDonorListFromDB(req.query);
+  await UserServices.getDonorListFromDB(req.query,user);
 sendResponse(res, {
   statusCode: httpStatus.OK,
   success: true,
   message: 'Donors are retrieved successfully',
   meta: result.meta,
-  data: result.result,
+  data:{
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Donors are retrieved successfully',
+    meta: result.meta,
+    data: result.result},
 });
 })
+
+
+
+
+
+const getUsersList: RequestHandler = catchAsync(async (req: Request, res: Response) => {
+  const result =
+  await UserServices.getUsersListFromDB(req.query,req.user);
+sendResponse(res, {
+  statusCode: httpStatus.OK,
+  success: true,
+  message: 'Users are retrieved successfully',
+  meta: result.meta,
+  data:{
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users are retrieved successfully',
+    meta: result.meta,
+    data: result.result},
+});
+})
+
+
+
 
 export const UserControllers = {
 
@@ -87,5 +145,6 @@ export const UserControllers = {
   createAdmin,
   getMe,
   changeStatus,
-  getDonorList
+  getDonorList,
+  getUsersList
 };

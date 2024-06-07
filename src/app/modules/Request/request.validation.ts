@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BloodGroup } from '../Donor/donor.constant';
 
 const createRequest = z.object({
   body: z.object({
@@ -20,6 +21,16 @@ const createRequest = z.object({
     reason: z.string({
       required_error: 'reason field is required.',
     }),
+
+    donorName: z.string({
+      required_error: 'reason field is required.',
+    }),  requesterName: z.string({
+      required_error: 'reason field is required.',
+    }),
+
+    bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
+
+
   }),
 });
 

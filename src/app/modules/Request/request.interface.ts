@@ -10,6 +10,10 @@ export type TRequest = {
   id: string;
 
   donorId: string;
+  donorName: string;
+  requesterName: string;
+
+
   requesterId: string;
   phoneNumber: string;
   dateOfDonation: string;

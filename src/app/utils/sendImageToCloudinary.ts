@@ -1,6 +1,6 @@
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
-import multer from 'multer';
+import multer, { StorageEngine } from 'multer';
 import config from '../config';
 
 cloudinary.config({
@@ -35,14 +35,22 @@ export const sendImageToCloudinary = (
   });
 };
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, process.cwd() + '/uploads/');
+
+
+
+const storage: StorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix);
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}`);
   },
 });
+
 
 export const upload = multer({ storage: storage });

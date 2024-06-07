@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { USER_ROLE } from '../User/user.constant';
@@ -27,6 +27,7 @@ router.post(
     USER_ROLE.admin,
     USER_ROLE.faculty,
     USER_ROLE.student,
+    USER_ROLE.donor
   ),
   validateRequest(AuthValidation.changePasswordValidationSchema),
   AuthControllers.changePassword,

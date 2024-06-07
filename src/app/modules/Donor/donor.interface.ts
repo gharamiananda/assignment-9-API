@@ -34,8 +34,7 @@ age:number;
   permanentAddress: string;
   profileImg?: string;
   availability:boolean;
-  donateBlood:boolean;
-
+  wantToDonateBlood:boolean;
   // donorRequests  :  Types.ObjectId;
   // requesterRequests: Types.ObjectId
 };

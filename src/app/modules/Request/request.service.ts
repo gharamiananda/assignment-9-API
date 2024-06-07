@@ -6,13 +6,14 @@ import { donorFilterableFields } from "./request.constant";
 import { TRequestStatus } from "./request.interface";
 import { Request } from "./request.model";
 
+
 const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: any) => {
 
     console.log('payload', payload)
     const donarUserData = await User.findOne({id:payload.donorId});
 
 
-    console.log('donarUserData', donarUserData)
+    console.log('currentUser', currentUser)
     const createdRequestData= await Request.create({
      
             donorId: payload.donorId,
@@ -21,7 +22,11 @@ const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: a
             hospitalName: payload.hospitalName,
             hospitalAddress: payload.hospitalAddress,
             reason: payload.reason,
-            requesterId:currentUser?._id as string
+            requesterId:currentUser?.userId as string,
+            bloogGroup:payload.bloogGroup,
+            requesterName:payload.requesterName,
+
+            donorName:payload.donorName
         
     });
     return {
@@ -38,11 +43,19 @@ const createRequestIntoDB = async (currentUser:Record<string,unknown>,payload: a
 const getMyDonorRequestsFromDB = async (currentUser:JwtPayload) => {
 
    
-    const request = await Request.find({ donorId: currentUser.userId as string});
+    const request = await Request.find({ requesterId: currentUser.userId as string});
 
     return request;
 };
 
+
+const getRequestsToMeFromDB = async (currentUser:JwtPayload) => {
+console.log('currentUser', currentUser)
+   
+  const request = await Request.find({ donorId: currentUser.userId as string});
+
+  return request;
+};
 
 const getDonorListFromDB = async ( query: Record<string, unknown>) => {
 
@@ -69,15 +82,33 @@ const getDonorListFromDB = async ( query: Record<string, unknown>) => {
 
 
 
+
+
+
+const getAnyRequestsApprovedOrNotFromDB = async (currentUser:JwtPayload) => {
+  console.log('currentUser', currentUser)
+     
+    const request = await Request.find({ requesterId: currentUser.userId as string,requestStatus:'APPROVED'});
+  
+    return request;
+  };
+  
+
 const updateStatusRequestIntoDB = async (requestId:string,payload:{status:TRequestStatus}) => {
 
-    const request = await Request.findOneAndUpdate({ id: requestId},{requestStatus:payload?.status});
+    const request = await Request.findByIdAndUpdate(requestId,{requestStatus:payload?.status},{
+      new:true,
+
+    });
 
     return {request };
 };
+
 export const RequestServices = {
     createRequestIntoDB,
     getMyDonorRequestsFromDB,
     updateStatusRequestIntoDB,
-    getDonorListFromDB
+    getDonorListFromDB,
+    getRequestsToMeFromDB,
+    getAnyRequestsApprovedOrNotFromDB
 }
