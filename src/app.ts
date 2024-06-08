@@ -10,6 +10,7 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 
+
 const app: Application = express();
 
 //parsers
@@ -35,6 +36,7 @@ app.use(cors(corsOptions));
 app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
+
   res.send('Welcome to the Blood Donation API!');
 });
 

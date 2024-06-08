@@ -30,11 +30,8 @@ age:number;
   contactNo: string;
   emergencyContactNo?: string;
   bloogGroup?: TBloodGroup;
-  country: string;
-  state: string;
-  city: string;
-  lat: string,
-  lng: string,
+  address: Record<string,unknown>;
+
 
   profileImg?: string;
   availability:boolean;

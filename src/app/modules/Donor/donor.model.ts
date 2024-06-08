@@ -74,20 +74,11 @@ const donorSchema = new Schema<TDonor, DonorModel>(
         message: '{VALUE} is not a valid blood group',
       },
     },
-    country: {
-      type: String,
-      required: [true, 'Country is required'],
+    address: { 
+      
+      type: Schema.Types.Mixed,
+      required: false,
     },
-    state: {
-      type: String,
-      required: [true, 'State is required'],
-    },
-    city: {
-      type: String,
-      required: [true, 'City is required'],
-    },
-    lat: { type: String , default: ''},
-    lng: { type: String , default: ''},
     
     profileImg: { type: String, default: '' },
     availability :{
