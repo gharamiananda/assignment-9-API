@@ -30,8 +30,12 @@ age:number;
   contactNo: string;
   emergencyContactNo?: string;
   bloogGroup?: TBloodGroup;
-  presentAddress: string;
-  permanentAddress: string;
+  country: string;
+  state: string;
+  city: string;
+  lat: string,
+  lng: string,
+
   profileImg?: string;
   availability:boolean;
   wantToDonateBlood:boolean;

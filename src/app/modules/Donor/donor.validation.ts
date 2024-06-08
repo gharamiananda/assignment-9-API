@@ -21,8 +21,11 @@ export const createDonorValidationSchema = z.object({
     contactNo: z.string(),
     emergencyContactNo: z.string().optional(),
     bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]),
-    presentAddress: z.string(),
-    permanentAddress: z.string(),
+    country: z.string(),
+    state: z.string(),
+    city: z.string(),
+    lat:z.string().optional(),
+    lng:z.string().optional(),
     wantToDonateBlood:z.any()
   }),
 });
@@ -41,11 +44,14 @@ export const updateDonorValidationSchema = z.object({
       contactNo: z.string().optional(),
       emergencyContactNo: z.string().optional(),
       bloogGroup: z.enum([...BloodGroup] as [string, ...string[]]).optional(),
-      presentAddress: z.string().optional(),
-      permanentAddress: z.string().optional(),
+      country: z.string().optional(),
+    state: z.string().optional(),
+    city: z.string().optional(),
       age: z.number().optional(),
-      wantToDonateBlood:z.any().optional()
+      wantToDonateBlood:z.any().optional(),
 
+      lat:z.string().optional(),
+      lng:z.string().optional(),
  
   }),
 });

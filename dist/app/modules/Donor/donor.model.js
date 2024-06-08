@@ -42,14 +42,6 @@ const donorSchema = new mongoose_1.Schema({
         unique: true,
         ref: 'User',
     },
-    // donorRequests: [{
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'User',
-    // }],
-    // requesterRequests:[ {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'User',
-    // }],
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],
@@ -88,14 +80,20 @@ const donorSchema = new mongoose_1.Schema({
             message: '{VALUE} is not a valid blood group',
         },
     },
-    presentAddress: {
+    country: {
         type: String,
-        required: [true, 'Present address is required'],
+        required: [true, 'Country is required'],
     },
-    permanentAddress: {
+    state: {
         type: String,
-        required: [true, 'Permanent address is required'],
+        required: [true, 'State is required'],
     },
+    city: {
+        type: String,
+        required: [true, 'City is required'],
+    },
+    lat: { type: String, default: '' },
+    lng: { type: String, default: '' },
     profileImg: { type: String, default: '' },
     availability: {
         type: Boolean,
@@ -111,14 +109,6 @@ const donorSchema = new mongoose_1.Schema({
     },
 });
 // generating full name
-donorSchema.virtual('fullName').get(function () {
-    var _a, _b, _c;
-    return (((_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName) +
-        '' +
-        ((_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.middleName) +
-        '' +
-        ((_c = this === null || this === void 0 ? void 0 : this.name) === null || _c === void 0 ? void 0 : _c.lastName));
-});
 // filter out deleted documents
 donorSchema.pre('find', function (next) {
     this.find({ isDeleted: { $ne: true } });

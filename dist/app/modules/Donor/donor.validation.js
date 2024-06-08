@@ -20,8 +20,11 @@ exports.createDonorValidationSchema = zod_1.z.object({
         contactNo: zod_1.z.string(),
         emergencyContactNo: zod_1.z.string().optional(),
         bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]),
-        presentAddress: zod_1.z.string(),
-        permanentAddress: zod_1.z.string(),
+        country: zod_1.z.string(),
+        state: zod_1.z.string(),
+        city: zod_1.z.string(),
+        lat: zod_1.z.string().optional(),
+        lng: zod_1.z.string().optional(),
         wantToDonateBlood: zod_1.z.any()
     }),
 });
@@ -38,10 +41,13 @@ exports.updateDonorValidationSchema = zod_1.z.object({
         contactNo: zod_1.z.string().optional(),
         emergencyContactNo: zod_1.z.string().optional(),
         bloogGroup: zod_1.z.enum([...donor_constant_1.BloodGroup]).optional(),
-        presentAddress: zod_1.z.string().optional(),
-        permanentAddress: zod_1.z.string().optional(),
+        country: zod_1.z.string().optional(),
+        state: zod_1.z.string().optional(),
+        city: zod_1.z.string().optional(),
         age: zod_1.z.number().optional(),
-        wantToDonateBlood: zod_1.z.any().optional()
+        wantToDonateBlood: zod_1.z.any().optional(),
+        lat: zod_1.z.string().optional(),
+        lng: zod_1.z.string().optional(),
     }),
 });
 exports.AdminValidations = {

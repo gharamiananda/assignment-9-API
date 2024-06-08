@@ -34,19 +34,6 @@ const donorSchema = new Schema<TDonor, DonorModel>(
       unique: true,
       ref: 'User',
     },
-   
-    // donorRequests: [{
-    //   type: Schema.Types.ObjectId,
-  
-  
-    //   ref: 'User',
-    // }],
-    // requesterRequests:[ {
-    //   type: Schema.Types.ObjectId,
-    
-     
-    //   ref: 'User',
-    // }],
   
     name: {
       type: userNameSchema,
@@ -87,16 +74,22 @@ const donorSchema = new Schema<TDonor, DonorModel>(
         message: '{VALUE} is not a valid blood group',
       },
     },
-    presentAddress: {
+    country: {
       type: String,
-      required: [true, 'Present address is required'],
+      required: [true, 'Country is required'],
     },
-    permanentAddress: {
+    state: {
       type: String,
-      required: [true, 'Permanent address is required'],
+      required: [true, 'State is required'],
     },
+    city: {
+      type: String,
+      required: [true, 'City is required'],
+    },
+    lat: { type: String , default: ''},
+    lng: { type: String , default: ''},
+    
     profileImg: { type: String, default: '' },
-   
     availability :{
       type: Boolean,
       default: true,
@@ -117,15 +110,7 @@ const donorSchema = new Schema<TDonor, DonorModel>(
 );
 
 // generating full name
-donorSchema.virtual('fullName').get(function () {
-  return (
-    this?.name?.firstName +
-    '' +
-    this?.name?.middleName +
-    '' +
-    this?.name?.lastName
-  );
-});
+
 
 // filter out deleted documents
 donorSchema.pre('find', function (next) {
